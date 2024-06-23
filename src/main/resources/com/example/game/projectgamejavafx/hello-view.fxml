@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="684.0" prefWidth="698.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.game.projectgamejavafx.GameController">
+   <children>
+      <ImageView fx:id="bg1" fitHeight="685.0" fitWidth="760.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/WorkAdobeEnd.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bg2" fitHeight="685.0" layoutX="696.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/WorkAdobeEnd.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="playerPlane" fitHeight="76.0" fitWidth="85.0" layoutX="33.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/SImage.png" />
+         </image></ImageView>
+      <ImageView fx:id="enemyPlane" fitHeight="76.0" fitWidth="85.0" layoutX="813.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/SImageM.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
