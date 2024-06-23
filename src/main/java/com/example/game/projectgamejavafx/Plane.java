@@ -3,6 +3,7 @@ package com.example.game.projectgamejavafx;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 
 public class Plane {
     //move
@@ -13,7 +14,6 @@ public class Plane {
     public static boolean speedUp = false;
     //values
     public int playerSpeed = 3;
-    public double angleSpeed = 1.5;
     //image
     @FXML
     private ImageView playerPlane;
@@ -21,21 +21,82 @@ public class Plane {
     private Image planeDownImage;
     private Image planeStockImage;
 
-    public void changePlaneImage(String direction){
-        switch (direction){
-            case "up":
+    public Plane(ImageView playerPlane){
+        this.playerPlane = playerPlane;
+        initializeImages();
+    }
+
+    public int start(){
+        return playerSpeed = 3;
+    }
+    public int stop(){
+        return playerSpeed = 0;
+    }
+
+    public void initializeImages(){
+        planeUpImage = new Image(getClass().getResource("/com/example/game/images/UpImage.png").toString());
+        planeDownImage = new Image(getClass().getResource("/com/example/game/images/downImage.png").toString());
+        planeStockImage = new Image(getClass().getResource("/com/example/game/images/sImage.png").toString());
+    }
+    public void handleKeyPress(KeyCode code){
+        switch (code){
+            case D -> right = true;
+            case A -> left = true;
+            case W -> {
+                up = true;
                 playerPlane.setImage(planeUpImage);
-                break;
-            case "down":
+            }
+            case S -> {
+                down = true;
                 playerPlane.setImage(planeDownImage);
-                break;
-            default:
-                playerPlane.setImage(planeStockImage);
+            }
+            case SHIFT -> speedUp = true;
         }
     }
-    void planController(){
-        if(playerPlane.getLayoutY() > 550f){
-
+        public void handleKeyRelease(KeyCode code){
+        switch (code){
+            case D -> right = false;
+            case A -> left = false;
+            case W -> {
+                up = false;
+                playerPlane.setImage(planeStockImage);
+            }
+            case S -> {
+                down = false;
+                playerPlane.setImage(planeStockImage);
+            }
+            case SHIFT -> speedUp = false;
         }
+    }
+
+    public void updatePosition(){
+        double speedX = 0;
+        double speedY = 0;
+
+        if(right && playerPlane.getLayoutX() < 600f){
+            speedX += playerSpeed;
+        }
+        if(left && playerPlane.getLayoutX() > 10f){
+            speedX -= playerSpeed;
+        }
+        if(up && playerPlane.getLayoutY() > 0f) {
+            playerPlane.setLayoutY(playerPlane.getLayoutY() - playerSpeed);
+            speedY -= playerSpeed;
+        }
+        if(down && playerPlane.getLayoutY() < 550f){
+            playerPlane.setLayoutY(playerPlane.getLayoutY() + playerSpeed);
+            speedY += playerSpeed;
+        }
+        if(speedX != 0 && speedY != 0){
+            speedX /= Math.sqrt(2);
+            speedY /= Math.sqrt(2);
+        }
+        if(speedUp){
+            speedX *= 1.8;
+            speedY *= 1.8;
+        }
+
+        playerPlane.setLayoutX(playerPlane.getLayoutX() + speedX);
+        playerPlane.setLayoutY(playerPlane.getLayoutY() + speedY);
     }
 }

@@ -1,5 +1,5 @@
 package com.example.game.projectgamejavafx;
-
+import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -17,18 +17,25 @@ public class GameController {
     private ImageView bg2;
     @FXML
     private ImageView playerPlane;
+    @FXML
+    private ImageView enemyPlane;
+
+    @FXML
+    private ImageView enemyTower;
+    @FXML
+    private Label labelPause;
+    @FXML
+    private Label labelLose;
+    private Plane playerPlaneController;
     private ParallelTransition parallelTransition;
-    public static boolean right = false;
-    public static boolean left = false;
-    public static boolean up = false;
-    public static boolean down = false;
-    public static boolean speedUp = false;
     private Image planeUpImage;
     private Image planeDownImage;
-    private  Image planeStockImage;//!!
+    private Image planeStockImage;
+    private TranslateTransition enemyPlaneTransition;
+    private TranslateTransition enemyPlaneTransition;
+
+    public static boolean isPause = false;
     private static GameController instance;
-    public int playerSpeed = 3;
-    public double angleSpeed = 1.5;
 
     public GameController(){
         instance = this;
@@ -36,58 +43,6 @@ public class GameController {
     public static GameController getInstance(){
         return instance;
     }
-
-    public void changePlaneImage(String direction){
-        switch (direction){
-            case "up":
-                playerPlane.setImage(planeUpImage);
-                break;
-            case "down":
-                playerPlane.setImage(planeDownImage);
-                break;
-            default:
-                playerPlane.setImage(planeStockImage);
-        }
-    }
-    AnimationTimer timer = new AnimationTimer() {
-        @Override
-        public void handle(long now) {
-            double speedX = 0;
-            double speedY = 0;
-            //movement
-            if(right && playerPlane.getLayoutX() < 600f){
-                //playerPlane.setLayoutX(playerPlane.getLayoutX() + playerSpeed);
-                speedX += playerSpeed;
-            }
-            if(left && playerPlane.getLayoutX() > 10f){
-                //playerPlane.setLayoutX(playerPlane.getLayoutX() - playerSpeed);
-                speedX -= playerSpeed;
-            }
-            if(up && playerPlane.getLayoutY() > 0f) {
-                playerPlane.setLayoutY(playerPlane.getLayoutY() - playerSpeed);
-                speedY -= playerSpeed;
-            }
-            if(down && playerPlane.getLayoutY() < 550f){
-                playerPlane.setLayoutY(playerPlane.getLayoutY() + playerSpeed);
-                speedY += playerSpeed;
-            }
-
-            if(speedX != 0 && speedY != 0){
-                speedX /= Math.sqrt(2);
-                speedY /= Math.sqrt(2);
-            }
-
-            if(speedUp){
-                speedX *= 1.8;
-                speedY *= 1.8;
-            }
-
-            playerPlane.setLayoutX(playerPlane.getLayoutX() + speedX);
-            playerPlane.setLayoutY(playerPlane.getLayoutY() + speedY);
-        }
-
-
-    };
 
     @FXML
     void initialize() {
@@ -98,10 +53,9 @@ public class GameController {
         planeUpImage = new Image(getClass().getResource("/com/example/game/images/UpImage.png").toString());
         planeStockImage = new Image(getClass().getResource("/com/example/game/images/sImage.png").toString());
         planeDownImage = new Image(getClass().getResource("/com/example/game/images/downImage.png").toString());
-
-
-
         playerPlane.setImage(planeStockImage);
+
+        playerPlaneController = new Plane(playerPlane);
 
         TranslateTransition bgOneTransition = new TranslateTransition(Duration.millis(5000), bg1);
         bgOneTransition.setFromX(0);
@@ -113,7 +67,7 @@ public class GameController {
         bgTwoTransition.setToX(BG_WIDTH * -1);
         bgTwoTransition.setInterpolator(Interpolator.LINEAR);
 
-        TranslateTransition enemyPlaneTransition = new TranslateTransition(Duration.millis(4000), enemyPlane);
+        enemyPlaneTransition = new TranslateTransition(Duration.millis(4000), enemyPlane);
         enemyPlaneTransition.setFromX(0);
         enemyPlaneTransition.setToX(BG_WIDTH * -1 - 300);
         enemyPlaneTransition.setInterpolator(Interpolator.LINEAR);
@@ -124,6 +78,35 @@ public class GameController {
         parallelTransition.setCycleCount(Animation.INDEFINITE);
         parallelTransition.play();
 
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                playerPlaneController.updatePosition();
+
+                if(isPause && !labelPause.isVisible()){
+                    playerPlaneController.stop();
+                    parallelTransition.pause();
+                    enemyPlaneTransition.pause();
+                    labelPause.setVisible(true);
+                } else if (!isPause && labelPause.isVisible()) {
+                    playerPlaneController.start();
+                    parallelTransition.play();
+                    enemyPlaneTransition.play();
+                    labelPause.setVisible(false);
+                }
+
+                if(playerPlane.getBoundsInParent().intersects(enemyPlane.getBoundsInParent())){
+                    playerPlaneController.stop();
+                    parallelTransition.stop();
+                    enemyPlaneTransition.stop();
+                    labelLose.setVisible(true);
+                }
+            }
+        };
         timer.start();
+    }
+
+    public Plane getPlane(){
+        return playerPlaneController;
     }
 }
