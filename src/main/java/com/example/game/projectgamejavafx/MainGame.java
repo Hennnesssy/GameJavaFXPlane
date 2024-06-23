@@ -12,7 +12,6 @@ import java.io.IOException;
 public class MainGame extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainGame.class.getResource("hello-view.fxml"));
-        //Scene scene = new Scene(fxmlLoader.load(), 698, 684);
         Scene scene = new Scene(fxmlLoader.load(), 698, 684);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("Bomber!");
@@ -22,13 +21,15 @@ public class MainGame extends Application {
 
         GameController gameController = fxmlLoader.getController();
 
-        scene.setOnKeyPressed(e -> gameController.getPlane().handleKeyPress(e.getCode()));
+        scene.setOnKeyPressed(e -> {
+            gameController.getPlane().handleKeyPress(e.getCode());
+
+            if(e.getCode() == KeyCode.SPACE){
+                gameController.getPlane().shoot(gameController.getEnemyPlane());
+            }
+        });
         scene.setOnKeyReleased(e -> {
             gameController.getPlane().handleKeyRelease(e.getCode());
-
-            if(e.getCode() == KeyCode.ESCAPE){
-                GameController.isPause = !GameController.isPause;
-            }
         });
     }
     public static void main(String[] args) {

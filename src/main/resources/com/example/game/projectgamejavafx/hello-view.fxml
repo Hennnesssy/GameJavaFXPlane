@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="684.0" prefWidth="698.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.game.projectgamejavafx.GameController">
+<AnchorPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="684.0" prefWidth="698.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.game.projectgamejavafx.GameController">
    <children>
       <ImageView fx:id="bg1" fitHeight="685.0" fitWidth="760.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -42,5 +42,11 @@
             <Image url="@../images/Tower.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="12.0" fitWidth="25.0" layoutX="-83.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/midlShot.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="labelScore" layoutX="14.0" layoutY="14.0" text="Kill = " />
    </children>
 </AnchorPane>

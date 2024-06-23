@@ -1,12 +1,12 @@
 package com.example.game.projectgamejavafx;
 import javafx.scene.control.Label;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class GameController {
@@ -32,7 +32,9 @@ public class GameController {
     private Image planeDownImage;
     private Image planeStockImage;
     private TranslateTransition enemyPlaneTransition;
-    private TranslateTransition enemyPlaneTransition;
+    private TranslateTransition enemyTowerTransition;
+    @FXML
+    private AnchorPane gamePane;
 
     public static boolean isPause = false;
     private static GameController instance;
@@ -55,8 +57,8 @@ public class GameController {
         planeDownImage = new Image(getClass().getResource("/com/example/game/images/downImage.png").toString());
         playerPlane.setImage(planeStockImage);
 
-        playerPlaneController = new Plane(playerPlane);
-
+        playerPlaneController = new Plane(playerPlane, gamePane);
+        //background
         TranslateTransition bgOneTransition = new TranslateTransition(Duration.millis(5000), bg1);
         bgOneTransition.setFromX(0);
         bgOneTransition.setToX(BG_WIDTH * -1);
@@ -67,6 +69,10 @@ public class GameController {
         bgTwoTransition.setToX(BG_WIDTH * -1);
         bgTwoTransition.setInterpolator(Interpolator.LINEAR);
 
+        parallelTransition = new ParallelTransition(bgOneTransition, bgTwoTransition);
+        parallelTransition.setCycleCount(Animation.INDEFINITE);
+        parallelTransition.play();
+
         enemyPlaneTransition = new TranslateTransition(Duration.millis(4000), enemyPlane);
         enemyPlaneTransition.setFromX(0);
         enemyPlaneTransition.setToX(BG_WIDTH * -1 - 300);
@@ -74,9 +80,6 @@ public class GameController {
         enemyPlaneTransition.setCycleCount(Animation.INDEFINITE);
         enemyPlaneTransition.play();
 
-        parallelTransition = new ParallelTransition(bgOneTransition, bgTwoTransition);
-        parallelTransition.setCycleCount(Animation.INDEFINITE);
-        parallelTransition.play();
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -108,5 +111,13 @@ public class GameController {
 
     public Plane getPlane(){
         return playerPlaneController;
+    }
+
+    public ImageView getEnemyPlane() {
+        return enemyPlane;
+    }
+
+    public ImageView getEnemyTower() {
+        return enemyTower;
     }
 }

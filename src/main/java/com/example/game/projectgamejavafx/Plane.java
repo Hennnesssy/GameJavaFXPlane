@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
+
+import java.lang.classfile.Label;
 
 public class Plane {
     //move
@@ -12,6 +15,7 @@ public class Plane {
     public static boolean up = false;
     public static boolean down = false;
     public static boolean speedUp = false;
+    public static boolean shot = false;
     //values
     public int playerSpeed = 3;
     //image
@@ -20,10 +24,15 @@ public class Plane {
     private Image planeUpImage;
     private Image planeDownImage;
     private Image planeStockImage;
+    @FXML
+    public Label labelScore;
+    @FXML
+    private AnchorPane gamePane;
 
-    public Plane(ImageView playerPlane){
+    public Plane(ImageView playerPlane, AnchorPane gamePane){
         this.playerPlane = playerPlane;
         initializeImages();
+        this.gamePane = gamePane;
     }
 
     public int start(){
@@ -98,5 +107,15 @@ public class Plane {
 
         playerPlane.setLayoutX(playerPlane.getLayoutX() + speedX);
         playerPlane.setLayoutY(playerPlane.getLayoutY() + speedY);
+    }
+    public void shoot(ImageView image){
+        double startX = playerPlane.getLayoutX() + playerPlane.getBoundsInParent().getWidth() / 2;
+        double startY = playerPlane.getLayoutY() + playerPlane.getBoundsInParent().getHeight() / 2;
+        double directionX = Math.cos(Math.toRadians(playerPlane.getRotate()));
+        double directionY = Math.sin(Math.toRadians(playerPlane.getRotate()));
+
+        Bullet bullet = new Bullet(startX, startY, directionX, directionY, gamePane);
+
+
     }
 }
