@@ -15,7 +15,6 @@ public class Plane {
     public static boolean up = false;
     public static boolean down = false;
     public static boolean speedUp = false;
-    public static boolean shot = false;
     //values
     public int playerSpeed = 3;
     //image
@@ -108,15 +107,13 @@ public class Plane {
         playerPlane.setLayoutX(playerPlane.getLayoutX() + speedX);
         playerPlane.setLayoutY(playerPlane.getLayoutY() + speedY);
     }
-    public void shoot(ImageView image){
+    public void shoot(EnemyPlane enemyPlane){
         double startX = playerPlane.getLayoutX() + playerPlane.getBoundsInParent().getWidth() / 2;
         double startY = playerPlane.getLayoutY() + playerPlane.getBoundsInParent().getHeight() / 2;
         double directionX = Math.cos(Math.toRadians(playerPlane.getRotate()));
         double directionY = Math.sin(Math.toRadians(playerPlane.getRotate()));
 
-        Bullet bullet = new Bullet(startX, startY, directionX, directionY, gamePane);
-
-
+        Bullet bullet = new Bullet(startX, startY, directionX, directionY, gamePane, enemyPlane);
     }
 }
 //s

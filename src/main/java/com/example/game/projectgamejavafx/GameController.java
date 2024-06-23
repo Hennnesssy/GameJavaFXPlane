@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class GameController {
@@ -18,9 +17,6 @@ public class GameController {
     @FXML
     private ImageView playerPlane;
     @FXML
-    private ImageView enemyPlane;
-
-    @FXML
     private ImageView enemyTower;
     @FXML
     private Label labelPause;
@@ -31,13 +27,16 @@ public class GameController {
     private Image planeUpImage;
     private Image planeDownImage;
     private Image planeStockImage;
-    private TranslateTransition enemyPlaneTransition;
-    private TranslateTransition enemyTowerTransition;
     @FXML
     private AnchorPane gamePane;
-
     public static boolean isPause = false;
     private static GameController instance;
+    private EnemyPlane enemyPlane;
+    private boolean spawnEnable = true;
+    private int score = 0;
+    @FXML
+    private Label labelScore;
+    public static boolean allowKey = false;
 
     public GameController(){
         instance = this;
@@ -73,52 +72,80 @@ public class GameController {
         parallelTransition.setCycleCount(Animation.INDEFINITE);
         parallelTransition.play();
 
-        enemyPlaneTransition = new TranslateTransition(Duration.millis(4000), enemyPlane);
-        enemyPlaneTransition.setFromX(0);
-        enemyPlaneTransition.setToX(BG_WIDTH * -1 - 300);
-        enemyPlaneTransition.setInterpolator(Interpolator.LINEAR);
-        enemyPlaneTransition.setCycleCount(Animation.INDEFINITE);
-        enemyPlaneTransition.play();
-
+        spawnEnemyPlane();
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 playerPlaneController.updatePosition();
-
-                if(isPause && !labelPause.isVisible()){
-                    playerPlaneController.stop();
-                    parallelTransition.pause();
-                    enemyPlaneTransition.pause();
-                    labelPause.setVisible(true);
-                } else if (!isPause && labelPause.isVisible()) {
-                    playerPlaneController.start();
-                    parallelTransition.play();
-                    enemyPlaneTransition.play();
-                    labelPause.setVisible(false);
-                }
-
-                if(playerPlane.getBoundsInParent().intersects(enemyPlane.getBoundsInParent())){
-                    playerPlaneController.stop();
-                    parallelTransition.stop();
-                    enemyPlaneTransition.stop();
-                    labelLose.setVisible(true);
-                }
+                lose();
             }
         };
         timer.start();
+    }
+
+    public void pauseOrResume(){
+        isPause =!isPause;
+        if(isPause){
+            pauseGame();
+        }else if(!isPause){
+            resumeGame();
+        }
+    }
+    public void pauseGame(){
+        playerPlaneController.stop();
+        parallelTransition.pause();
+        enemyPlane.pause();
+        spawnEnable = false;
+        enemyPlane.pause();
+        labelPause.setVisible(true);
+    }
+
+    public void resumeGame(){
+        playerPlaneController.start();
+        parallelTransition.play();
+        enemyPlane.start();
+        spawnEnable = true;
+        enemyPlane.start();
+        labelPause.setVisible(false);
+    }
+
+    public void lose(){
+        if(playerPlane.getBoundsInParent().intersects(enemyPlane.getEnemyPlane().getBoundsInParent())){
+            playerPlaneController.stop();
+            parallelTransition.stop();
+            enemyPlane.stop();
+            spawnEnable = false;
+            isPause = true;
+            allowKey = true;
+            labelLose.setVisible(true);
+        }
+    }
+
+    public void spawnEnemyPlane(){
+        if(spawnEnable = true){
+            if(enemyPlane != null){
+                enemyPlane.remove();
+            }
+            enemyPlane = new EnemyPlane(gamePane);
+        }
+    }
+
+    public EnemyPlane getEnemyPlane() {
+        return enemyPlane;
     }
 
     public Plane getPlane(){
         return playerPlaneController;
     }
 
-    public ImageView getEnemyPlane() {
-        return enemyPlane;
-    }
-
     public ImageView getEnemyTower() {
         return enemyTower;
+    }
+
+    public void updateScore(){
+        score++;
+        labelScore.setText("kill: " + score);
     }
 }
 //ss

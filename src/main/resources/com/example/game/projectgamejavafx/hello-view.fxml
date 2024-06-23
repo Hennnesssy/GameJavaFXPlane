@@ -27,16 +27,6 @@
             <Image url="@../images/enemyPlane.png" />
          </image>
       </ImageView>
-      <Label fx:id="labelPause" focusTraversable="false" layoutX="270.0" layoutY="299.0" text="Pause" textOverrun="CENTER_ELLIPSIS" visible="false">
-         <font>
-            <Font name="System Italic" size="60.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelLose" focusTraversable="false" layoutX="280.0" layoutY="309.0" text="Lose" textOverrun="CENTER_ELLIPSIS" visible="false">
-         <font>
-            <Font name="System Italic" size="60.0" />
-         </font>
-      </Label>
       <ImageView fx:id="enemyTower" fitHeight="96.0" fitWidth="73.0" layoutX="1036.0" layoutY="572.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/Tower.png" />
@@ -48,5 +38,15 @@
          </image>
       </ImageView>
       <Label fx:id="labelScore" layoutX="14.0" layoutY="14.0" text="Kill = " />
+      <Label fx:id="labelPause" focusTraversable="false" layoutX="270.0" layoutY="299.0" text="Pause" textOverrun="CENTER_ELLIPSIS" visible="false">
+         <font>
+            <Font name="System Italic" size="60.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelLose" focusTraversable="false" layoutX="280.0" layoutY="309.0" text="Lose" textOverrun="CENTER_ELLIPSIS" visible="false">
+         <font>
+            <Font name="System Italic" size="60.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -22,18 +22,26 @@ public class MainGame extends Application {
         GameController gameController = fxmlLoader.getController();
 
         scene.setOnKeyPressed(e -> {
-            gameController.getPlane().handleKeyPress(e.getCode());
+            if (!gameController.isPause) {
+                gameController.getPlane().handleKeyPress(e.getCode());
+                if (e.getCode() == KeyCode.SPACE) {
+                    gameController.getPlane().shoot(gameController.getEnemyPlane());
+                }
+            }
 
-            if(e.getCode() == KeyCode.SPACE){
-                gameController.getPlane().shoot(gameController.getEnemyPlane());
+            if(!gameController.allowKey) {
+                if(e.getCode() == KeyCode.ESCAPE){
+                    gameController.pauseOrResume();
+                }
             }
         });
         scene.setOnKeyReleased(e -> {
-            gameController.getPlane().handleKeyRelease(e.getCode());
+            if (!gameController.isPause) {
+                gameController.getPlane().handleKeyRelease(e.getCode());
+            }
         });
     }
     public static void main(String[] args) {
         launch();
     }
 }
-//s
