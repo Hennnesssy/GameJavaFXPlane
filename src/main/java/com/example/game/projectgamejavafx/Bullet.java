@@ -59,3 +59,4 @@ public class Bullet {
                 bulletView.getY() < 0 || bulletView.getY() > gamePane.getHeight();
     }
 }
+//s
