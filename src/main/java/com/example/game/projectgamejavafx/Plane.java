@@ -110,12 +110,16 @@ public class Plane {
     public void shoot(EnemyPlane enemyPlane){
         double startX = playerPlane.getLayoutX() + playerPlane.getBoundsInParent().getWidth() / 2;
         double startY = playerPlane.getLayoutY() + playerPlane.getBoundsInParent().getHeight() / 2;
-        double directionX = Math.cos(Math.toRadians(playerPlane.getRotate()));
-        double directionY = Math.sin(Math.toRadians(playerPlane.getRotate()));
 
-        Bullet bullet = new Bullet(startX, startY, directionX, directionY, gamePane, enemyPlane);
+        Bullet bullet = new Bullet(startX, startY, 1, 0, gamePane, enemyPlane);
     }
 
+    public void verticalShoot(EnemyPlane enemyPlane){
+        double startX = playerPlane.getLayoutX() + playerPlane.getBoundsInParent().getWidth() / 2;
+        double startY = playerPlane.getLayoutY() + playerPlane.getBoundsInParent().getHeight() / 2;
+
+        Bullet bullet = new Bullet(startX, startY, 0, 1, gamePane, enemyPlane);
+    }
     public ImageView getPlayerPlane() {
         return playerPlane;
     }

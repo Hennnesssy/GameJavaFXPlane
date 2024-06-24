@@ -27,11 +27,17 @@ public class MainGame extends Application {
                 if (e.getCode() == KeyCode.SPACE) {
                     gameController.getPlane().shoot(gameController.getEnemyPlane());
                 }
+                if(e.getCode() == KeyCode.C){
+                    gameController.getPlane().verticalShoot(gameController.getEnemyPlane());
+                }
             }
 
             if(!gameController.allowKey) {
                 if(e.getCode() == KeyCode.ESCAPE){
                     gameController.pauseOrResume();
+                }
+                if(e.getCode() == KeyCode.C){
+                    gameController.getPlane().verticalShoot(gameController.getEnemyPlane());
                 }
             }
         });

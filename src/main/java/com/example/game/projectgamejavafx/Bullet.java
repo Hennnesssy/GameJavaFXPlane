@@ -67,8 +67,8 @@ public class Bullet {
         }.start();
     }
     private boolean isOutOfBounds() {
-        return bulletView.getX() < 0 || bulletView.getX() > gamePane.getWidth() ||
-                bulletView.getY() < 0 || bulletView.getY() > gamePane.getHeight();
+        return bulletView.getLayoutX() < 0 || bulletView.getLayoutX() > gamePane.getWidth() ||
+                bulletView.getLayoutY() < 0 || bulletView.getLayoutY() > gamePane.getHeight();
     }
 }
 //s
