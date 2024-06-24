@@ -112,6 +112,8 @@ public class GameController {
         enemyPlane.pause();
         spawnEnable = false;
         enemyPlane.pause();
+        enemyTower.pause();
+        enemyPlane.stopShooting();
         labelPause.setVisible(true);
     }
 
@@ -121,6 +123,8 @@ public class GameController {
         enemyPlane.start();
         spawnEnable = true;
         enemyPlane.start();
+        enemyTower.start();
+        enemyPlane.startRandomShooting();
         labelPause.setVisible(false);
     }
 

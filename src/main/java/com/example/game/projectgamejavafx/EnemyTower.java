@@ -48,7 +48,11 @@ public class EnemyTower {
             enemyTowerTransition.stop();
         }
     }
-
+    public void pause() {
+        if (enemyTowerTransition != null) {
+            enemyTowerTransition.pause();
+        }
+    }
     public void remove() {
         gamePane.getChildren().remove(enemyTowerView);
         isDestroyed = true;
