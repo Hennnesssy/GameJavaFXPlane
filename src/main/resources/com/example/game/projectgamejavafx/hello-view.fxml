@@ -22,12 +22,12 @@
          <image>
             <Image url="@../images/SImage.png" />
          </image></ImageView>
-      <ImageView fx:id="enemyPlane" fitHeight="76.0" fitWidth="85.0" layoutX="813.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="enemyPlane" fitHeight="76.0" fitWidth="85.0" layoutX="747.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/enemyPlane.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="enemyTower" fitHeight="96.0" fitWidth="73.0" layoutX="1036.0" layoutY="572.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="enemyTower" fitHeight="148.0" fitWidth="73.0" layoutX="924.0" layoutY="567.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/Tower.png" />
          </image>

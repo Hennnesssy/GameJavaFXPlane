@@ -17,7 +17,7 @@ public class GameController {
     @FXML
     private ImageView playerPlane;
     @FXML
-    private ImageView enemyTower;
+    private ImageView enemyTowerView;
     @FXML
     private Label labelPause;
     @FXML
@@ -31,7 +31,9 @@ public class GameController {
     private AnchorPane gamePane;
     public static boolean isPause = false;
     private static GameController instance;
+    //ENEMY
     private EnemyPlane enemyPlane;
+    private EnemyTower enemyTower;
     private boolean spawnEnable = true;
     private int score = 0;
     @FXML
@@ -73,6 +75,7 @@ public class GameController {
         parallelTransition.play();
 
         spawnEnemyPlane();
+        spawnEnemyTower();
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -123,11 +126,19 @@ public class GameController {
     }
 
     public void spawnEnemyPlane(){
-        if(spawnEnable = true){
+        if(spawnEnable == true){
             if(enemyPlane != null){
                 enemyPlane.remove();
             }
             enemyPlane = new EnemyPlane(gamePane, playerPlaneController);
+        }
+    }
+    public void spawnEnemyTower(){
+        if(spawnEnable == true){
+            if(enemyTower != null){
+                enemyTower.remove();
+            }
+            enemyTower = new EnemyTower(gamePane, playerPlaneController);
         }
     }
 
@@ -139,8 +150,8 @@ public class GameController {
         return playerPlaneController;
     }
 
-    public ImageView getEnemyTower() {
-        return enemyTower;
+    public ImageView getEnemyTowerView() {
+        return enemyTowerView;
     }
 
     public void updateScore(){
