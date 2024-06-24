@@ -14,9 +14,23 @@ public class Bullet {
     @FXML
     private AnchorPane gamePane;
     private EnemyPlane enemyPlane;
+    private EnemyTower enemyTower;
     private boolean hasCollided = false;
-    private Image midlShot;
 
+    public Bullet(double startX, double startY, double directionX, double directionY, AnchorPane gamePane, EnemyPlane enemyPlane, EnemyTower enemyTower){
+        Image spawnImage = new Image(getClass().getResource("/com/example/game/images/firstShot.png").toString());
+        bulletView = new ImageView(spawnImage);
+        bulletView.setX(startX);
+        bulletView.setY(startY);
+        this.directionX = directionX;
+        this.directionY = directionY;
+        this.gamePane = gamePane;
+        this.enemyPlane = enemyPlane;
+        this.enemyTower = enemyTower;
+
+        gamePane.getChildren().add(bulletView);
+        startFlying();
+    }
     public Bullet(double startX, double startY, double directionX, double directionY, AnchorPane gamePane, EnemyPlane enemyPlane){
         Image spawnImage = new Image(getClass().getResource("/com/example/game/images/firstShot.png").toString());
         bulletView = new ImageView(spawnImage);
@@ -35,18 +49,16 @@ public class Bullet {
         return bulletView;
     }
 
-    private void startFlying(){
-        new AnimationTimer(){
+    private void startFlying() {
+        new AnimationTimer() {
             @Override
-            public void handle(long now){
-                if(!hasCollided) {
+            public void handle(long now) {
+                if (!hasCollided) {
                     bulletView.setLayoutX(bulletView.getLayoutX() + directionX * speed);
                     bulletView.setLayoutY(bulletView.getLayoutY() + directionY * speed);
                 }
 
-                System.out.println("player x " + bulletView.getLayoutX() + " Y " + bulletView.getLayoutY());
-
-                if(bulletView.getBoundsInParent().intersects(gamePane.sceneToLocal(enemyPlane.getEnemyPlane().getBoundsInParent()))){
+                if (bulletView.getBoundsInParent().intersects(gamePane.sceneToLocal(enemyPlane.getEnemyPlane().getBoundsInParent()))) {
                     hasCollided = true;
                     gamePane.getChildren().remove(bulletView);
                     enemyPlane.remove();
@@ -54,12 +66,21 @@ public class Bullet {
                     GameController.getInstance().updateScore();
                     this.stop();
                 }
-                if(bulletView.getImage().getUrl().endsWith("/com/example/game/images/firstShot.png")){
-                    bulletView.setImage(new Image(getClass().
-                            getResource("/com/example/game/images/midlShot.png").toString()));
+
+                if (enemyTower != null && !enemyTower.isDestroyed() && bulletView.getBoundsInParent().intersects(gamePane.sceneToLocal(enemyTower.getEnemyTowerView().getBoundsInParent()))) {
+                    hasCollided = true;
+                    gamePane.getChildren().remove(bulletView);
+                    enemyTower.remove();
+                    GameController.getInstance().spawnEnemyTower();
+                    GameController.getInstance().updateScore();
+                    this.stop();
                 }
 
-                if(isOutOfBounds()){
+                if (bulletView.getImage().getUrl().endsWith("/com/example/game/images/firstShot.png")) {
+                    bulletView.setImage(new Image(getClass().getResource("/com/example/game/images/midlShot.png").toString()));
+                }
+
+                if (isOutOfBounds()) {
                     gamePane.getChildren().remove(bulletView);
                     this.stop();
                 }
@@ -71,4 +92,3 @@ public class Bullet {
                 bulletView.getLayoutY() < 0 || bulletView.getLayoutY() > gamePane.getHeight();
     }
 }
-//s

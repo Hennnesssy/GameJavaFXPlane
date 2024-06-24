@@ -24,8 +24,9 @@ public class EnemyPlane {
     private ImageView enemyPlaneView;
     private AnchorPane gamePane;
     private final int BG_WIDTH = 698;
+    private AnimationTimer shootingTimer;
+    private EnemyTower enemyTower;
 
-//    private AnimationTimer shootTimer;
     private Plane playerPlane;
     public EnemyPlane(AnchorPane gamePane,Plane playerPlane){
         this.gamePane = gamePane;
@@ -34,7 +35,7 @@ public class EnemyPlane {
         initializationEnemyPlane();
         initializationAnimation();
         startRandomShooting();
-//        initializationShooting();
+
     }
     public void initializationEnemyPlane(){
         int randomY = random.nextInt(550 - 100 + 1) + 100;
@@ -51,61 +52,32 @@ public class EnemyPlane {
         enemyPlaneTransition.setFromX(0);
         enemyPlaneTransition.setToX(BG_WIDTH * -1 - 300);
         enemyPlaneTransition.setInterpolator(Interpolator.LINEAR);
+        enemyPlaneTransition.setCycleCount(Animation.INDEFINITE);
         enemyPlaneTransition.setCycleCount(1);
-        enemyPlaneTransition.setOnFinished(actionEvent -> remove());
+        enemyPlaneTransition.setOnFinished(actionEvent -> removeIfNeeded());
         enemyPlaneTransition.play();
+
     }
+    public void startRandomShooting() {
+        new AnimationTimer() {
+            private long lastShootTime = 0;
+            private final long shootInterval = 4000000000L;
 
-//    public void initializationShooting(){
-//        shootTimer = new AnimationTimer(){
-//            private long lastShootTime = 0;
-//            private final long shootInterval = 2_000_000_000;
-//
-//            @Override
-//            public void handle(long now){
-//                if(now - lastShootTime >=shootInterval){
-//                    shoot(playerPlane);
-//                    lastShootTime = now;
-//                }
-//            }
-//        };
-//        shootTimer.start();
-//    }
-
-//    public void startRandomShooting() {
-//        shootTimer = new Timer();
-//
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                shoot(playerPlane);
-//                int delay = random.nextInt(3000 - 1000 + 1) + 1000;
-//                shootTimer.schedule(new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        shoot(playerPlane);
-//                    }
-//                }, delay);
-//            }
-//        };
-//
-//        int initialDelay = random.nextInt(3000 - 1000 + 1) + 1000;
-//        shootTimer.schedule(task, initialDelay);
-//    }
-public void startRandomShooting() {
-    new AnimationTimer() {
-        private long lastShootTime = 0;
-        private final long shootInterval = 4000000000L;
-
-        @Override
-        public void handle(long now) {
-            if (now - lastShootTime >= shootInterval) {
-                Platform.runLater(() -> shoot(playerPlane));
-                lastShootTime = now;
+            @Override
+            public void handle(long now) {
+                if (now - lastShootTime >= shootInterval) {
+                    Platform.runLater(() -> shoot(playerPlane));
+                    lastShootTime = now;
+                }
             }
+        }.start();
+    }
+    public void stopShooting() {
+        if (shootingTimer != null) {
+            shootingTimer.stop();
+            enemyTower.stop();
         }
-    }.start();
-}
+    }
     public void shoot(Plane plane){
         if (plane != null && gamePane.getChildren().contains(enemyPlaneView)) {
             double startX = enemyPlaneView.getLayoutX() + enemyPlaneView.getBoundsInParent().getWidth() / 2;
@@ -118,6 +90,18 @@ public void startRandomShooting() {
 
         }
     }
+    private boolean isOutOfBounds() {
+        return enemyPlaneView.getLayoutX() < 0 || enemyPlaneView.getLayoutX() > gamePane.getWidth() ||
+                enemyPlaneView.getLayoutY() < 0 || enemyPlaneView.getLayoutY() > gamePane.getHeight();
+    }
+    private void removeIfNeeded() {
+        if (isOutOfBounds()) {
+            stop();
+            gamePane.getChildren().remove(enemyPlaneView);
+            initializationEnemyPlane();
+            initializationAnimation();
+        }
+    }
 
     public void start(){
         enemyPlaneTransition.play();
@@ -126,11 +110,9 @@ public void startRandomShooting() {
     public void pause(){
         enemyPlaneTransition.pause();
     }
-    public void stop(){
+    public void stop() {
         enemyPlaneTransition.stop();
-        if (shootTimer != null) {
-            shootTimer.cancel();
-        }
+        stopShooting();
     }
     public ImageView getEnemyPlane() {
         return enemyPlaneView;
@@ -138,9 +120,7 @@ public void startRandomShooting() {
     public void remove(){
         stop();
         gamePane.getChildren().remove(enemyPlaneView);
-//        enemyPlaneTransition.stop();
-//        gamePane.getChildren().remove(enemyPlaneView);
-//        if(shootTimer != null){
-//            shootTimer.cancel();
     }
 }
+
+

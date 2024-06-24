@@ -21,24 +21,35 @@ public class GameController {
     @FXML
     private Label labelPause;
     @FXML
-    private Label labelLose;
+    Label labelLose;
+
+    public Plane getPlayerPlaneController() {
+        return playerPlaneController;
+    }
+
     private Plane playerPlaneController;
+
+    public ParallelTransition getParallelTransition() {
+        return parallelTransition;
+    }
+
     private ParallelTransition parallelTransition;
     private Image planeUpImage;
     private Image planeDownImage;
     private Image planeStockImage;
     @FXML
     private AnchorPane gamePane;
-    public static boolean isPause = false;
+    public  boolean isPause = false;
     private static GameController instance;
     //ENEMY
     private EnemyPlane enemyPlane;
     private EnemyTower enemyTower;
-    private boolean spawnEnable = true;
+    public boolean spawnEnable = true;
     private int score = 0;
     @FXML
     private Label labelScore;
     public static boolean allowKey = false;
+    private EnemyPlaneBullet enemyBullet;
 
     public GameController(){
         instance = this;
@@ -121,6 +132,10 @@ public class GameController {
             spawnEnable = false;
             isPause = true;
             allowKey = true;
+            if (enemyTower != null) {
+                enemyTower.stop();
+            }
+            enemyPlane.stopShooting();
             labelLose.setVisible(true);
         }
     }
@@ -138,12 +153,15 @@ public class GameController {
             if(enemyTower != null){
                 enemyTower.remove();
             }
-            enemyTower = new EnemyTower(gamePane, playerPlaneController);
+            enemyTower = new EnemyTower(gamePane);
         }
     }
 
     public EnemyPlane getEnemyPlane() {
         return enemyPlane;
+    }
+    public EnemyTower getEnemyTower(){
+        return enemyTower;
     }
 
     public Plane getPlane(){

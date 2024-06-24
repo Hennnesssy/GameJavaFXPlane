@@ -61,7 +61,7 @@ public class Plane {
             case SHIFT -> speedUp = true;
         }
     }
-        public void handleKeyRelease(KeyCode code){
+    public void handleKeyRelease(KeyCode code){
         switch (code){
             case D -> right = false;
             case A -> left = false;
@@ -114,14 +114,14 @@ public class Plane {
         Bullet bullet = new Bullet(startX, startY, 1, 0, gamePane, enemyPlane);
     }
 
-    public void verticalShoot(EnemyPlane enemyPlane){
+    public void verticalShoot(EnemyPlane enemyPlane, EnemyTower enemyTower){
         double startX = playerPlane.getLayoutX() + playerPlane.getBoundsInParent().getWidth() / 2;
         double startY = playerPlane.getLayoutY() + playerPlane.getBoundsInParent().getHeight() / 2;
 
-        Bullet bullet = new Bullet(startX, startY, 0, 1, gamePane, enemyPlane);
+        Bullet bullet = new Bullet(startX, startY, 0, 1, gamePane, enemyPlane, enemyTower);
     }
     public ImageView getPlayerPlane() {
         return playerPlane;
     }
 }
-//s
+

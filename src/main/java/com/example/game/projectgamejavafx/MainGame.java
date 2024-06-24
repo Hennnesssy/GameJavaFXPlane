@@ -28,7 +28,7 @@ public class MainGame extends Application {
                     gameController.getPlane().shoot(gameController.getEnemyPlane());
                 }
                 if(e.getCode() == KeyCode.C){
-                    gameController.getPlane().verticalShoot(gameController.getEnemyPlane());
+                    gameController.getPlane().verticalShoot(gameController.getEnemyPlane(), gameController.getEnemyTower());
                 }
             }
 
@@ -37,7 +37,7 @@ public class MainGame extends Application {
                     gameController.pauseOrResume();
                 }
                 if(e.getCode() == KeyCode.C){
-                    gameController.getPlane().verticalShoot(gameController.getEnemyPlane());
+                    gameController.getPlane().verticalShoot(gameController.getEnemyPlane(), gameController.getEnemyTower());
                 }
             }
         });

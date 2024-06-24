@@ -12,6 +12,9 @@ public class EnemyPlaneBullet {
     private double directionX, directionY;
     private AnchorPane gamePane;
     private Plane plane;
+    private GameController gameController;
+    private EnemyPlane enemyPlane;
+    private EnemyTower enemyTower;
 
     public EnemyPlaneBullet(double startX, double startY,
                             double directionX, double directionY, AnchorPane gamePane, Plane plane) {;
@@ -25,6 +28,7 @@ public class EnemyPlaneBullet {
         this.gamePane = gamePane;
         this.plane = plane;
 
+        this.gameController = GameController.getInstance();
         Platform.runLater(() ->gamePane.getChildren().add(bulletImageView));
         startFlying();
     }
@@ -42,8 +46,6 @@ public class EnemyPlaneBullet {
                     bulletImageView.setLayoutY(bulletImageView.getLayoutY() + directionY * speed);
                 });
 
-                System.out.println("x " + bulletImageView.getLayoutX() + " Y " + bulletImageView.getLayoutY());
-
                 if (bulletImageView.getBoundsInParent().intersects(plane.getPlayerPlane().getBoundsInParent())) {
                     Platform.runLater(() -> gamePane.getChildren().remove(bulletImageView));
                     this.stop();
@@ -52,9 +54,27 @@ public class EnemyPlaneBullet {
                 if (bulletImageView.getImage().getUrl().endsWith("/com/example/game/images/firstShot.png")) {
                     Platform.runLater(() -> bulletImageView.setImage(new Image(getClass().getResource("/com/example/game/images/midlShot.png").toString())));
                 }
-
                 if (isOutOfBounds()) {
                     Platform.runLater(() -> gamePane.getChildren().remove(bulletImageView));
+                    this.stop();
+                }
+                if(bulletImageView.getBoundsInParent().intersects(gamePane.sceneToLocal(plane.getPlayerPlane().getBoundsInParent()))){
+                    Platform.runLater(() -> {
+                        gamePane.getChildren().remove(bulletImageView);
+                        gameController.getPlayerPlaneController().stop();
+                        gameController.getParallelTransition().stop();
+                        gameController.getEnemyPlane().stop();
+                        gameController.spawnEnable = false;
+                        gameController.isPause = true;
+                        gameController.allowKey = true;
+                        if (gameController.getEnemyPlane() != null) {
+                            gameController.getEnemyPlane().stop();
+                        }
+                        if (gameController.getEnemyTower() != null) {
+                            gameController.getEnemyTower().stop();
+                        }
+                        gameController.labelLose.setVisible(true);
+                    });
                     this.stop();
                 }
             }

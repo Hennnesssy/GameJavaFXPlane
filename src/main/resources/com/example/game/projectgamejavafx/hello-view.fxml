@@ -27,7 +27,7 @@
             <Image url="@../images/enemyPlane.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="enemyTower" fitHeight="148.0" fitWidth="73.0" layoutX="924.0" layoutY="567.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="enemyTower" fitHeight="67.0" fitWidth="72.0" layoutX="788.0" layoutY="590.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/Tower.png" />
          </image>
