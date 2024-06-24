@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.Label;
 
 
 public class Bullet {
@@ -14,9 +13,9 @@ public class Bullet {
     private double speed = 10;
     @FXML
     private AnchorPane gamePane;
-//    private ImageView enemyPlane;
     private EnemyPlane enemyPlane;
     private boolean hasCollided = false;
+    private Image midlShot;
 
     public Bullet(double startX, double startY, double directionX, double directionY, AnchorPane gamePane, EnemyPlane enemyPlane){
         Image spawnImage = new Image(getClass().getResource("/com/example/game/images/firstShot.png").toString());
@@ -44,6 +43,8 @@ public class Bullet {
                     bulletView.setLayoutX(bulletView.getLayoutX() + directionX * speed);
                     bulletView.setLayoutY(bulletView.getLayoutY() + directionY * speed);
                 }
+
+                System.out.println("player x " + bulletView.getLayoutX() + " Y " + bulletView.getLayoutY());
 
                 if(bulletView.getBoundsInParent().intersects(gamePane.sceneToLocal(enemyPlane.getEnemyPlane().getBoundsInParent()))){
                     hasCollided = true;

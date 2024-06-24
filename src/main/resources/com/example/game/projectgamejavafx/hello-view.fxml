@@ -37,7 +37,7 @@
             <Image url="@../images/midlShot.png" />
          </image>
       </ImageView>
-      <Label fx:id="labelScore" layoutX="14.0" layoutY="14.0" text="Kill = " />
+      <Label fx:id="labelScore" layoutX="14.0" layoutY="14.0" text="kill:" />
       <Label fx:id="labelPause" focusTraversable="false" layoutX="270.0" layoutY="299.0" text="Pause" textOverrun="CENTER_ELLIPSIS" visible="false">
          <font>
             <Font name="System Italic" size="60.0" />

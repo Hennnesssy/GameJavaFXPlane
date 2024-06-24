@@ -18,11 +18,14 @@ public class EnemyPlane {
     private AnchorPane gamePane;
     private final int BG_WIDTH = 698;
     private AnimationTimer shootTimer;
-    public EnemyPlane(AnchorPane gamePane){
+    private Plane playerPlane;
+    public EnemyPlane(AnchorPane gamePane,Plane playerPlane){
         this.gamePane = gamePane;
+        this.playerPlane = playerPlane;
 
         initializationEnemyPlane();
         initializationAnimation();
+        initializationShooting();
     }
     public void initializationEnemyPlane(){
         Random random = new Random();
@@ -52,7 +55,7 @@ public class EnemyPlane {
             @Override
             public void handle(long now){
                 if(now - lastShootTime >=shootInterval){
-                    shoot();
+                    shoot(playerPlane);
                     lastShootTime = now;
                 }
             }
@@ -66,7 +69,9 @@ public class EnemyPlane {
         double directionX = -1;
         double directionY = 0;
 
-        Bullet bullet = new Bullet(startX, startY, directionX, directionY, gamePane, GameController.getInstance().getPlane());
+        new EnemyPlaneBullet(startX, startY, directionX, directionY, gamePane, plane);
+        System.out.println("enemy shoot");
+        //EnemyPlaneBullet enemyPlaneBullet = new EnemyPlaneBullet(startX, startY, directionX, directionY, gamePane, plane);
     }
 
     public void start(){

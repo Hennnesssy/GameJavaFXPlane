@@ -127,7 +127,7 @@ public class GameController {
             if(enemyPlane != null){
                 enemyPlane.remove();
             }
-            enemyPlane = new EnemyPlane(gamePane);
+            enemyPlane = new EnemyPlane(gamePane, playerPlaneController);
         }
     }
 

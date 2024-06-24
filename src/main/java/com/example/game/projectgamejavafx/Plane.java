@@ -115,5 +115,9 @@ public class Plane {
 
         Bullet bullet = new Bullet(startX, startY, directionX, directionY, gamePane, enemyPlane);
     }
+
+    public ImageView getPlayerPlane() {
+        return playerPlane;
+    }
 }
 //s
